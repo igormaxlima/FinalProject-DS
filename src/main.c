@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "cliente.h"
-#include "compra.h"
-#include "estoque.h"
-#include "login.h"
+#include "../inc/cliente.h"
+#include "../inc/compra.h"
+#include "../inc/estoque.h"
+#include "../inc/login.h"
 
-int main()
-{
+int main() {
   return 0;
 }
