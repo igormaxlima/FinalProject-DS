@@ -16,6 +16,7 @@ void initialLogin()
 
     switch (ch)
     {
+
     case '1':
       break;
     case '2':
