@@ -17,4 +17,5 @@ void addUser() {
     printf("CPF: ");
     scanf("%d", &newUser.cpf);
     printf("Senha: ");
+    
 }
