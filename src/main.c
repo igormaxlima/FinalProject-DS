@@ -7,6 +7,6 @@
 
 int main()
 {
-  login();
+  initialMenu();
   return 0;
 }
