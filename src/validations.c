@@ -13,9 +13,9 @@ bool verifyExistenceCPF(char *cpf)
 
   arquivo = fopen("./data/clientes.csv", "r");
 
-  if (arquivo == NULL)
+  if (!arquivo)
   {
-    printf("Nenhum usuário cadastrado.\n");
+    fprintf(stderr, "Error ao abrir arquivo para verificacão de CPF.\n");
     return false;
   }
 

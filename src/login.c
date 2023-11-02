@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
 #include "../inc/login.h"
 #include "../inc/cliente.h"
 #include "../inc/validations.h"
@@ -72,13 +76,37 @@ void addUser()
   printf("Usuário cadastrado com sucesso!\n");
 }
 
-void initialMenu()
+bool verifyLogin(char *cpf, char *password)
+{
+  User user;
+  FILE *usersFile = fopen("./data/clientes.csv", "r");
+
+  if (!usersFile)
+  {
+    fprintf(stderr, "Error ao abrir arquivo.\n");
+    return false;
+  }
+
+  while (fscanf(usersFile, "%[^,], %[^,], %[^,], %[^\n]", user.username, user.cpf, user.email, user.password) != EOF)
+  {
+    if (strcmp(user.cpf, cpf) == 0 && strcmp(user.password, password) == 0)
+    {
+      fclose(usersFile);
+      return true;
+    }
+  }
+
+  fclose(usersFile);
+  return false;
+}
+
+void authMenu()
 {
   char ch;
   while (1)
   {
-    printf("1 - Funcionario\n");
-    printf("2 - Cliente\n");
+    printf("1 - Cadastrar Usuário\n");
+    printf("2 - Fazer Login\n");
     printf("Q - Sair\n");
     printf("Opção: ");
     ch = getchar();
@@ -88,9 +116,31 @@ void initialMenu()
     switch (ch)
     {
     case '1':
+      system("clear");
+      addUser();
       break;
     case '2':
-      addUser();
+      system("clear");
+      char cpf[12];
+      char password[16];
+      printf("CPF: ");
+      scanf(" %[^\n]%*c", cpf);
+      printf("Senha: ");
+      scanf(" %[^\n]%*c", password);
+      if (verifyLogin(cpf, password) == true)
+      {
+        sleep(1);
+        printf("Login bem sucedido!\n");
+        sleep(2);
+        clientMenu();
+      }
+      else
+      {
+        printf("Login Falhou!\n");
+        printf("Veja se já foi cadastrado e tente novamente...\n");
+        sleep(3);
+        system("clear");
+      }
       break;
     }
   }
