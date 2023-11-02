@@ -5,10 +5,12 @@
 typedef struct
 {
   int id;
-  char username[50];
+  char username[51];
   char cpf[12];
-  char password[15];
-  char email[50];
+  char password[16];
+  char email[51];
 } User;
+
+void clientMenu();
 
 #endif

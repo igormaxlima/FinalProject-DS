@@ -5,6 +5,7 @@
 // DECLARACOES DAS FUNCOES SOBRE O SISTEMA DE LOGIN PARA A APLICACAO
 
 void addUser();
-void initialMenu();
+void authMenu();
+bool verifyLogin(char *name, char *password);
 
 #endif
