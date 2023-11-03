@@ -3,12 +3,7 @@
 #include <string.h>
 #include "../inc/cliente.h"
 
-int checkCPF(char *cpf) {
-    if (strlen(cpf) != 11) {
-        return 0;
-    }
-    return 1;
-}
+
 
 void addUser() {
     char filename[] = "../data/clientes.csv";
@@ -21,17 +16,13 @@ void addUser() {
 
     User newUser;
     printf("Nome: ");
-    scanf("%[^\n]", newUser.username);
+    scanf("%[^\n]%*c", newUser.username);
     printf("CPF: ");
-    scanf("%s", newUser.cpf);
-    while (!checkCPF(newUser.cpf)) {
-        printf("CPF inválido.\n");
-        printf("CPF: ");
-        scanf("%s", newUser.cpf);
-    }
+    scanf("%[^\n]%*c", newUser.cpf);
     printf("Senha: ");
-    scanf("%s", newUser.password);
+    scanf("%[^\n]%*c", newUser.password);
 
+    //VERIFICA SE AS COLUNAS JÁ ESTÃO NO ARQUIVO CSV
     long fileSize;
     fseek(userFile, 0, SEEK_END);
     fileSize = ftell(userFile);
