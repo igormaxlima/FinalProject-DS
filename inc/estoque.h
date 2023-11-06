@@ -23,15 +23,4 @@ void list_products_by_quantity();
 void list_products_by_id();
 
 #endif 
-void addProduct();
-void listProducts();
-void updateProduct();
-void deleteProduct();
-void searchProduct();
-void updateProductQuantity();
-void listProductsAlfabetically();
-void listProductsByPrice();
-void listProductsByQuantity();
-void listProductsById();
 
-#endif
