@@ -3,9 +3,7 @@
 #include <stdbool.h>
 
 // DECLARACOES DAS FUNCOES SOBRE O SISTEMA DE LOGIN PARA A APLICACAO
-
-void addUser();
-void authMenu();
-bool verifyLogin(char *name, char *password);
+void authMenuClient();
+void authMenuEmployee();
 
 #endif

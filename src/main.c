@@ -35,10 +35,11 @@ int main()
     {
     case '1':
       system("clear");
+      authMenuEmployee();
       break;
     case '2':
       system("clear");
-      authMenu();
+      authMenuClient();
       break;
     }
   }
