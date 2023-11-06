@@ -72,22 +72,22 @@ bool verifyEmployeeLogin(char *id, char *password)
   return false;
 }
 
-int main() {
-    Employee employee;
-    addEmployee();
+// int main() {
+//     Employee employee;
+//     addEmployee();
 
-    char id[11];
-    char password[16];
+//     char id[11];
+//     char password[16];
 
-    printf("Digite seu ID de funcionário: ");
-    scanf(" %[^\n]%*c", id);
+//     printf("Digite seu ID de funcionário: ");
+//     scanf(" %[^\n]%*c", id);
 
-    printf("Digite sua senha: ");
-    scanf(" %[^\n]%*c", password);
+//     printf("Digite sua senha: ");
+//     scanf(" %[^\n]%*c", password);
 
-    if (verifyEmployeeLogin(id, password)) {
-        printf("Login bem-sucedido!\n");
-    } else {
-        printf("Falha no login. Verifique suas credenciais.\n");
-    }
-}
+//     if (verifyEmployeeLogin(id, password)) {
+//         printf("Login bem-sucedido!\n");
+//     } else {
+//         printf("Falha no login. Verifique suas credenciais.\n");
+//     }
+// }
