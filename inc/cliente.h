@@ -2,7 +2,7 @@
 #define CLIENTE_H
 
 // DECLARACOES DAS FUNCOES SOBRE O GERENCIAMENTO DE CLIENTES
-typedef struct user
+typedef struct
 {
   int id;
   char username[51];
@@ -11,8 +11,8 @@ typedef struct user
   char email[51];
 } User;
 
+void addUser();
+bool verifyClientLogin(char *name, char *password);
 void clientMenu();
-void clientRegister();
-
 
 #endif
