@@ -10,7 +10,7 @@ typedef struct
     unsigned int hash;
 } Employee;
 
-unsigned int hash(char *str);
+unsigned int hashEmployee(char *str);
 char generateEmployeeID();
 void addEmployee();
 bool verifyEmployeeLogin(char *id, unsigned int *passwordHash);

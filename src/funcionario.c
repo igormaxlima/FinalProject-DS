@@ -6,7 +6,7 @@
 #include <time.h>
 #include "../inc/funcionario.h"
 
-unsigned int hash(char *str) {
+unsigned int hashEmployee(char *str) {
     unsigned int hash = 0;
     while (*str) {
         hash += *str;
@@ -23,7 +23,7 @@ char generateEmployeeID()
 void addEmployee()
 {
   srand(time(NULL));
-  char filename[] = "../data/funcionarios.csv";
+  char filename[] = "./data/funcionarios.csv";
   FILE *employeeFile = fopen(filename, "a");
 
   if (!employeeFile)
@@ -53,7 +53,7 @@ void addEmployee()
   }
 
   //Hashing employee password
-  unsigned int passwordHash = hash(newEmployee.password);
+  unsigned int passwordHash = hashEmployee(newEmployee.password);
   newEmployee.hash = passwordHash;
 
   fprintf(employeeFile, "%s,%s,%u\n", newEmployee.username, newEmployee.id, newEmployee.hash);
@@ -68,7 +68,7 @@ void addEmployee()
 bool verifyEmployeeLogin(char *id, unsigned int *passwordHash)
 {
   Employee employee;
-  FILE *employeeFile = fopen("../data/funcionarios.csv", "r");
+  FILE *employeeFile = fopen("./data/funcionarios.csv", "r");
 
   if (!employeeFile)
   {
@@ -76,7 +76,7 @@ bool verifyEmployeeLogin(char *id, unsigned int *passwordHash)
     return false;
   }
 
-  while (fscanf(employeeFile, "%[^,], %[^,], %u", employee.username, employee.id, &employee.hash) != EOF)
+  while (fscanf(employeeFile, "%[^,], %[^\n,], %u", employee.username, employee.id, &employee.hash) != EOF)
   {
     if (strcmp(employee.id, id) == 0 && employee.hash == *passwordHash)
     {

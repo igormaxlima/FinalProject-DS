@@ -5,6 +5,15 @@
 #include "../inc/cliente.h"
 #include "../inc/validations.h"
 
+unsigned int hashClient(char *str) {
+    unsigned int hash = 0;
+    while (*str) {
+        hash += *str;
+        str++;
+    }
+    return hash;
+}
+
 void addUser()
 {
   char filename[] = "./data/clientes.csv";
@@ -69,12 +78,16 @@ void addUser()
     fprintf(userFile, "Nome do Usuário,CPF,Email,Senha\n");
   }
 
-  fprintf(userFile, "%s,%s,%s,%s\n", newUser.username, newUser.cpf, newUser.email, newUser.password);
+  //Hashing user password
+  unsigned int passwordHash = hashClient(newUser.password);
+  newUser.hash = passwordHash;
+
+  fprintf(userFile, "%s,%s,%s,%u\n", newUser.username, newUser.cpf, newUser.email, newUser.hash);
   fclose(userFile);
   printf("Usuário cadastrado com sucesso!\n");
 }
 
-bool verifyClientLogin(char *cpf, char *password)
+bool verifyClientLogin(char *cpf, unsigned int *hash)
 {
   User user;
   FILE *usersFile = fopen("./data/clientes.csv", "r");
@@ -85,9 +98,9 @@ bool verifyClientLogin(char *cpf, char *password)
     return false;
   }
 
-  while (fscanf(usersFile, "%[^,], %[^,], %[^,], %[^\n]", user.username, user.cpf, user.email, user.password) != EOF)
+  while (fscanf(usersFile, "%[^,], %[^,], %[^,], %u", user.username, user.cpf, user.email, &user.hash) != EOF)
   {
-    if (strcmp(user.cpf, cpf) == 0 && strcmp(user.password, password) == 0)
+    if (strcmp(user.cpf, cpf) == 0 && user.hash == *hash)
     {
       fclose(usersFile);
       return true;
