@@ -1,6 +1,7 @@
 #ifndef CLIENTE_H
 #define CLIENTE_H
 
+
 // DECLARACOES DAS FUNCOES SOBRE O GERENCIAMENTO DE CLIENTES
 typedef struct user
 {

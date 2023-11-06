@@ -6,6 +6,8 @@
 #include "../inc/login.h"
 #include "../inc/cliente.h"
 #include "../inc/validations.h"
+#include "../inc/estoque.h"
+
 
 void clearBuffer()
 {
