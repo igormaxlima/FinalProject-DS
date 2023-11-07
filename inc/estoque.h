@@ -9,18 +9,20 @@ typedef struct Product
     char name[50];
     float price;
     int quantity;
+    product *left;
+    product *right;
 }product;
 
-void add_product();
-void list_products();
-void update_product();
-void delete_product();
-void search_product();
-void update_product_quantity();
-void list_products_alfabetically();
-void list_products_by_price();
-void list_products_by_quantity();
-void list_products_by_id();
+product* addProduct(product* root, char* name, float price, int quantity);
+void listProducts(product *p);
+void updateProduct(product* root, char* name, float new_price);
+void deleteProduct();
+void searchProduct();
+void updateProductQuantity();
+void listProductsAlfabetically();
+void listProductsByPrice();
+void list_productsByQuantity();
+void list_productsById();
 
 #endif 
 
