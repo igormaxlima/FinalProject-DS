@@ -7,6 +7,8 @@
 #include "../inc/cliente.h"
 #include "../inc/validations.h"
 
+
+
 void clearBuffer()
 {
   int c;

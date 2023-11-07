@@ -1,25 +1,41 @@
 #ifndef ESTOQUE_H
 #define ESTOQUE_H
 
-// DECLARACOES DAS FUNCOES SOBRE O ESTOQUE DE PRODUTOS E SEU GERENCIAMENTO
-
-typedef struct Product
-{
+typedef struct product {
     int id;
     char name[50];
     float price;
     int quantity;
+    int height;
+    struct product *left;
+    struct product *right;
 } product;
 
-void add_product();
-void list_products();
-void update_product();
-void delete_product();
-void search_product();
-void update_product_quantity();
-void list_products_alfabetically();
-void list_products_by_price();
-void list_products_by_quantity();
-void list_products_by_id();
+// Organização para utilização da árvore em arquivo
+void writeProductToFile(FILE *file, product *root);
+product *readProductsFromFile();
+
+// funções para balanceamento da árvore
+int height(product *N);
+int max(int a, int b);
+product *rightRotate(product *y);
+product *leftRotate(product *x);
+int getBalance(product *N);
+
+//
+product *addProduct(product *root, char *name, float price, int quantity);
+void listProductsAlphabetically(product *root);
+void updateProductPrice(product *root, char *name, float new_price);
+
+// algoritmos de busca
+product *searchProductAlphabetically(product* root, char* name)
+product *searchProductById(product* root, int id);
+
+// outras manipulações
+void deleteProduct(product *root, char *name);
+void updateProductQuantity(product *root, char *name, int new_quantity);
+void anyProductsMissing(product *root);
+void list_productsById();
 
 #endif
+
