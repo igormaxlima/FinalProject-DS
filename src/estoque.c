@@ -24,3 +24,6 @@ product *addProduct(product *root, char *name, float price, int quantity) {
 
     return root;
 }
+void listProducts(product *p){
+    
+}
