@@ -7,11 +7,13 @@ typedef struct
     char id[10];
     char username[51];
     char password[16];
+    unsigned int hash;
 } Employee;
 
+unsigned int hashEmployee(char *str);
 char generateEmployeeID();
 void addEmployee();
-bool verifyEmployeeLogin(char *id, char *password);
+bool verifyEmployeeLogin(char *id, unsigned int *passwordHash);
 void employeeMenu();
 
 #endif

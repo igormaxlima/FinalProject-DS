@@ -35,7 +35,8 @@ void authMenuClient()
       scanf(" %[^\n]%*c", cpf);
       printf("Senha: ");
       scanf(" %[^\n]%*c", password);
-      if (verifyClientLogin(cpf, password) == true)
+      unsigned int userHash = hashClient(password);
+      if (verifyClientLogin(cpf, &userHash) == true)
       {
         sleep(1);
         printf("Login bem sucedido!\n");
@@ -81,7 +82,8 @@ void authMenuEmployee()
       scanf(" %[^\n]%*c", id);
       printf("Digite sua senha: ");
       scanf(" %[^\n]%*c", password);
-      if (verifyEmployeeLogin(id, password))
+      unsigned int employeeHash = hashEmployee(password);
+      if (verifyEmployeeLogin(id, &employeeHash))
       {
         sleep(1);
         printf("Login bem sucedido!\n");
