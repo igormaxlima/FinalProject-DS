@@ -12,30 +12,27 @@ typedef struct product {
 } product;
 
 // Organização para utilização da árvore em arquivo
-void writeProductToFile(FILE *file, product *root);
+void writeProductToFile(product *root);
+void writeProductToFileHelper(FILE *file, product *root);
 product *readProductsFromFile();
 
-// funções para balanceamento da árvore
-int height(product *N);
-int max(int a, int b);
-product *rightRotate(product *y);
-product *leftRotate(product *x);
-int getBalance(product *N);
+// Criação da árvore
+product* createTree();
 
-//
-product *addProduct(product *root, char *name, float price, int quantity);
+//manipulação da árvore e adições
+product* addProduct(product *root, int id, char *name, float price, int quantity);
 void listProductsAlphabetically(product *root);
 void updateProductPrice(product *root, char *name, float new_price);
 
 // algoritmos de busca
-product *searchProductAlphabetically(product* root, char* name)
+product *searchProductAlphabetically(product* root, char* name);
 product *searchProductById(product* root, int id);
 
 // outras manipulações
-void deleteProduct(product *root, char *name);
+product *deleteProduct(product *root, char *name);
+product* minValueNode(product* node);
 void updateProductQuantity(product *root, char *name, int new_quantity);
 void anyProductsMissing(product *root);
-void list_productsById();
 
 #endif
 

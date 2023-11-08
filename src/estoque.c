@@ -7,15 +7,30 @@
 #include "../inc/estoque.h"
 
 //Funções para read e write no CSV da árvore
-void writeProductToFile(FILE *file, product *root) {
+void writeProductToFile(product *root) {
+    FILE *file = fopen("data/products.csv", "w");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+    writeProductToFileHelper(file, root);
+    fclose(file);
+}
+
+void writeProductToFileHelper(FILE *file, product *root) {
     if (root != NULL) {
         fprintf(file, "%d,%s,%.2f,%d\n", root->id, root->name, root->price, root->quantity);
-        writeProductToFile(file, root->left);
-        writeProductToFile(file, root->right);
+        writeProductToFileHelper(file, root->left);
+        writeProductToFileHelper(file, root->right);
     }
 }
+
 product *readProductsFromFile() {
-    FILE *file = fopen("products.csv", "r");
+    FILE *file = fopen("data/products.csv", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return NULL;
+    }
     product *root = NULL;
     int id;
     char name[50];
@@ -23,86 +38,38 @@ product *readProductsFromFile() {
     int quantity;
 
     while (fscanf(file, "%d,%49[^,],%f,%d\n", &id, name, &price, &quantity) == 4) {
-        root = addProduct(root, name, price, quantity);
+        root = addProduct(root, id, name, price, quantity);
     }
 
     fclose(file);
     return root;
 }
 
-// Funções para balanceamento da árvore
-int height(product *N) {
-    if (N == NULL)
-        return 0;
-    return N->height;
+product* createTree() {
+    return NULL;
 }
+// Funções de manipulação da árvore
 
-int max(int a, int b) {
-    return (a > b) ? a : b;
-}
 
-product* rightRotate(product *y) {
-    product *x = y->left;
-    product *T2 = x->right;
-    x->right = y;
-    y->left = T2;
-    y->height = max(height(y->left), height(y->right))+1;
-    x->height = max(height(x->left), height(x->right))+1;
-    return x;
-}
-
-product* leftRotate(product *x) {
-    product *y = x->right;
-    product *T2 = y->left;
-    y->left = x;
-    x->right = T2;
-    x->height = max(height(x->left), height(x->right))+1;
-    y->height = max(height(y->left), height(y->right))+1;
-    return y;
-}
-
-int getBalance(product *N) {
-    if (N == NULL)
-        return 0;
-    return height(N->left) - height(N->right);
-}
-
-product* addProduct(product *root, char *name, float price, int quantity) {
+product* addProduct(product *root, int id, char *name, float price, int quantity) {
+    // If the tree is empty, the new product becomes the root
     if (root == NULL) {
         product *new_product = (product*)malloc(sizeof(product));
+        new_product->id = id;
         strcpy(new_product->name, name);
         new_product->price = price;
         new_product->quantity = quantity;
-        new_product->height = 1;
+        new_product->left = NULL;
+        new_product->right = NULL;
         return new_product;
     }
 
+    //se raiz existe, continuar com a criação do nó
+    
     if (strcmp(name, root->name) < 0)
-        root->left = addProduct(root->left, name, price, quantity);
+        root->left = addProduct(root->left, id, name, price, quantity);
     else if (strcmp(name, root->name) > 0)
-        root->right = addProduct(root->right, name, price, quantity);
-    else
-        return root;
-
-    root->height = 1 + max(height(root->left), height(root->right));
-
-    int balance = getBalance(root);
-
-    if (balance > 1 && strcmp(name, root->left->name) < 0)
-        return rightRotate(root);
-
-    if (balance < -1 && strcmp(name, root->right->name) > 0)
-        return leftRotate(root);
-
-    if (balance > 1 && strcmp(name, root->left->name) > 0) {
-        root->left = leftRotate(root->left);
-        return rightRotate(root);
-    }
-
-    if (balance < -1 && strcmp(name, root->right->name) < 0) {
-        root->right = rightRotate(root->right);
-        return leftRotate(root);
-    }
+        root->right = addProduct(root->right, id, name, price, quantity);
 
     return root;
 }
@@ -112,13 +79,14 @@ void listProductsAlphabetically(product *root) { // em ordem
         // lado esquerdo do nó
         listProductsAlphabetically(root->left);
 
-        // Then print the data of the root
+        // Printar as informações do produto
+        printf("ID: %d \n", root->id);
         printf("Nome: %s \n", root->name);
         printf("Preço: %.2f \n", root->price);
         printf("Quantidade: %d \n", root->quantity);
         printf("-------------------\n");
 
-        // Now recur on right child
+        // recorrencia no filho da direita
         listProductsAlphabetically(root->right);
     }
 }
@@ -165,42 +133,42 @@ product *searchProductById(product *root, int id){
     return NULL;
 }
 
-void deleteProduct(product *root, char *name) {
+product* deleteProduct(product *root, char *name) {
     if (root == NULL) {
         printf("Produto não encontrado\n");
-        return;
+        return root;
     }
-    if (strcmp(root->name, name) < 0)
-        deleteProduct(root->right, name);
-    else if (strcmp(root->name, name) > 0)
-        deleteProduct(root->left, name);
+    if (strcmp(name, root->name) < 0)
+        root->left = deleteProduct(root->left, name);
+    else if (strcmp(name, root->name) > 0)
+        root->right = deleteProduct(root->right, name);
     else {
-        if (root->left == NULL && root->right == NULL) {
+        if (root->left == NULL) {
+            product *temp = root->right;
             free(root);
-            root = NULL;
-        }
-        else if (root->left == NULL) {
-            product *temp = root;
-            root = root->right;
-            free(temp);
+            return temp;
         }
         else if (root->right == NULL) {
-            product *temp = root;
-            root = root->left;
-            free(temp);
+            product *temp = root->left;
+            free(root);
+            return temp;
         }
-        else {
-            product *temp = root->right;
-            while (temp->left != NULL)
-                temp = temp->left;
-            strcpy(root->name, temp->name);
-            root->price = temp->price;
-            root->quantity = temp->quantity;
-            deleteProduct(root->right, temp->name);
-        }
+        product *temp = minValueNode(root->right);
+        strcpy(root->name, temp->name);
+        root->price = temp->price;
+        root->quantity = temp->quantity;
+        root->right = deleteProduct(root->right, temp->name);
     }
+    return root;
 }
+product* minValueNode(product* node) {
+    product* current = node;
 
+    while (current && current->left != NULL)
+        current = current->left;
+
+    return current;
+}
 void updateProductPrice(product *root, char *name, float new_price) {
     if (root == NULL) {
         printf("Produto não encontrado\n");
@@ -234,15 +202,18 @@ void anyProductsMissing(product *root){
         // lado esquerdo do nó
         anyProductsMissing(root->left);
 
-        // Then print the data of the root
+        //printar o que está em falta
         if(root->quantity == 0){
+            printf("Esse(s) produtos está(ão) em falta: \n");
+            printf("ID: %d \n", root->id);
             printf("Nome: %s \n", root->name);
             printf("Preço: %.2f \n", root->price);
             printf("Quantidade: %d \n", root->quantity);
             printf("-------------------\n");
         }
 
-        // Now recur on right child
+        // Recorrer no filho da direita
         anyProductsMissing(root->right);
     }
 }
+
