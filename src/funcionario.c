@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "../inc/funcionario.h"
+#include "../inc/estoque.h"
 
 unsigned int hashEmployee(char *str) {
     unsigned int hash = 0;
@@ -91,6 +92,43 @@ bool verifyEmployeeLogin(char *id, unsigned int *passwordHash)
 
 void employeeMenu()
 {
-  printf("MENU DO FUNCIONARIO!!!!!\n");
+  product *root = createTree();
+  char ch;
+  while (1) {
+    printf("1 - Listar todos os produtos\n");
+    printf("2 - Adicionar produto ao estoque\n");
+    printf("3 - Remover produto do estoque\n");
+    printf("4 - Procurar produto por nome\n");
+    printf("5 - Procurar produto por ID\n");
+    printf("6 - Atualizar quantidade de um produto\n");
+    printf("7 - Atualizar valor de um produto\n");
+    printf("8 - Verificar produto faltante\n");
+    ch = getchar();
+    clearBuffer();
+    
+    if (ch == 'q' || ch == 'Q')
+      break;
+
+    switch (ch) {
+      case '1':
+        system("clear");
+        listProductsAlphabetically(root);
+        break;
+      case '2':
+        system("clear");
+        int id;
+        char productName[50];
+        float price;
+        int quantity;
+        printf("ID do produto: ");
+        scanf("%d", &id);
+        printf("Produto: ");
+        scanf(" %[^\n]%*c", productName);
+        printf("Valor do produto: ");
+        scanf("%f", &price);
+        printf("Quantidade: ");
+        scanf("%d", &quantity);
+    }
+    }
   return;
 }

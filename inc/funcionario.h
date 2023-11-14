@@ -15,5 +15,6 @@ char generateEmployeeID();
 void addEmployee();
 bool verifyEmployeeLogin(char *id, unsigned int *passwordHash);
 void employeeMenu();
+void clearBuffer();
 
 #endif
