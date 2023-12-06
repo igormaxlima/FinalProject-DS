@@ -90,9 +90,11 @@ bool verifyEmployeeLogin(char *id, unsigned int *passwordHash)
   return false;
 }
 
-void employeeMenu()
+void manageProducts()
 {
+  system("clear");
   product *root = createTree();
+  root = readProductsFromFile();
   char ch;
   while (1) {
     printf("1 - Listar todos os produtos\n");
@@ -113,7 +115,12 @@ void employeeMenu()
       case '1':
         system("clear");
         listProductsAlphabetically(root);
-        break;
+        printf("Pressione Q para voltar ao menu anterior\n");
+        if (getchar() == 'q' || getchar() == 'Q') {
+          clearBuffer();
+          system("clear");
+          break;
+        }
       case '2':
         system("clear");
         int id;
@@ -128,7 +135,96 @@ void employeeMenu()
         scanf("%f", &price);
         printf("Quantidade: ");
         scanf("%d", &quantity);
+        root = addProduct(root, id, productName, price, quantity); 
+        writeProductToFile(root);
+        clearBuffer();
+        printf("Produto adicionado com sucesso!\n");
+        sleep(2); 
+        system("clear");  
+        break;
+      case '3':
+        system("clear");
+        char nameToRemove[50];
+        printf("Nome do produto: ");
+        scanf(" %[^\n]%*c", nameToRemove);
+        root = deleteProduct(root, nameToRemove);
+        writeProductToFile(root);
+        clearBuffer();
+        printf("Produto removido com sucesso!\n");
+        sleep(2);
+        system("clear");  
+        break;
+      case '4':
+        system("clear");
+        char nameToSearch[50];
+        printf("Nome do produto: ");
+        scanf(" %[^\n]%*c", nameToSearch);
+        system("clear");
+        product *foundProductName = searchProductAlphabetically(root, nameToSearch);
+        printf("Pressione Q para voltar ao menu anterior\n");
+        if (getchar() == 'q' || getchar() == 'Q') {
+          clearBuffer();
+          system("clear");
+          break;
+        }
+      case '5':
+        system("clear");
+        int idToSearch;
+        printf("ID do produto: ");
+        scanf("%d", &idToSearch);
+        system("clear");
+        product *foundProductId = searchProductById(root, idToSearch);
+        printf("Pressione Q para voltar ao menu anterior\n");
+        if (getchar() == 'q' || getchar() == 'Q') {
+          clearBuffer();
+          system("clear");
+          break;
+        }
+      case '6':
+        system("clear");
+        char nameToUpdate[50];
+        int newQuantity;
+        printf("Nome do produto: ");
+        scanf(" %[^\n]%*c", nameToUpdate);
+        printf("Nova quantidade: ");
+        scanf("%d", &newQuantity);
+        updateProductQuantity(root, nameToUpdate, newQuantity);
+        writeProductToFile(root);
+        clearBuffer();
+        printf("Quantidade atualizada com sucesso!\n");
+        sleep(2);
+        system("clear");
+        break;
+      case '7':
+        system("clear");
+        char nameToUpdatePrice[50];
+        float newPrice;
+        printf("Nome do produto: ");
+        scanf(" %[^\n]%*c", nameToUpdatePrice);
+        printf("Novo preço: ");
+        scanf("%f", &newPrice);
+        updateProductPrice(root, nameToUpdatePrice, newPrice);
+        writeProductToFile(root);
+        clearBuffer();
+        printf("Preço atualizado com sucesso!\n");
+        sleep(2);
+        system("clear");
+        break;
+      case '8':
+        system("clear");
+        printf("Produtos faltantes: \n");
+        anyProductsMissing(root);
+        printf("Pressione Q para voltar ao menu anterior\n");
+        if (getchar() == 'q' || getchar() == 'Q') {
+          clearBuffer();
+          system("clear");
+          break;
+        }
     }
-    }
+  }
   return;
+}
+
+void employeeMenu() {
+  manageProducts();
 }
